@@ -30019,8 +30019,8 @@ function gitOutput(cmd) {
     return (0, child_process_1.execSync)(cmd, { cwd: process.cwd() }).toString().trim();
 }
 function configureGit() {
-    gitExec("git config user.name 'dokku-bot'");
-    gitExec("git config user.email 'dokku-bot@users.noreply.github.com'");
+    gitExec("git config user.name 'tsc-platform'");
+    gitExec("git config user.email 'tsc-platform@users.noreply.github.com'");
 }
 async function postPRComment(octokit, owner, repo, prNumber, body) {
     await octokit.rest.issues.createComment({

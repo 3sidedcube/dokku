@@ -1,6 +1,6 @@
 name: dokku
 description: Automatically updates README using Claude AI when code changes are detected
-author: dokku-bot
+author: tsc-platform
 
 inputs:
   anthropic-api-key:
@@ -10,7 +10,7 @@ inputs:
     description: GitHub token for posting comments and opening PRs
     required: true
   mode:
-    description: "Operation mode: 'pr' to commit to the PR branch, 'open-pr' to open a new PR, 'audit' to diff full history and open a PR (run once on existing repos)"
+    description: "Operation mode: 'pr' to commit to the PR branch, 'open-pr' to open a new PR"
     required: true
   diff-file:
     description: Path to the file containing the git diff

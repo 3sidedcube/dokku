@@ -73,8 +73,8 @@ function gitOutput(cmd: string): string {
 }
 
 function configureGit(): void {
-  gitExec("git config user.name 'dokku-bot'");
-  gitExec("git config user.email 'dokku-bot@users.noreply.github.com'");
+  gitExec("git config user.name 'tsc-platform'");
+  gitExec("git config user.email 'tsc-platform@users.noreply.github.com'");
 }
 
 type Octokit = ReturnType<typeof github.getOctokit>;
@@ -152,14 +152,24 @@ async function run(): Promise<void> {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`Anthropic API error ${response.status}: ${errorText}`);
+      const status = response.status;
+      if (status === 401 || status === 403) {
+        core.setFailed(`dokku: invalid or missing Anthropic API key (HTTP ${status})`);
+        return;
+      }
+      throw new Error(`Anthropic API error ${status}: ${errorText}`);
     }
 
     const data = (await response.json()) as AnthropicMessage;
     const rawText = data.content[0].text;
     parsed = parseJsonResponse(rawText);
   } catch (err) {
-    core.warning(`dokku: failed to get response from Anthropic API — ${(err as Error).message}`);
+    const message = (err as Error).message;
+    if (message.includes('Anthropic API error')) {
+      core.setFailed(`dokku: ${message}`);
+    } else {
+      core.warning(`dokku: failed to parse Claude response — ${message}`);
+    }
     return;
   }
 

@@ -1,0 +1,34 @@
+name: dokku
+description: Automatically updates README using Claude AI when code changes are detected
+author: dokku-bot
+
+inputs:
+  anthropic-api-key:
+    description: Anthropic API key for Claude
+    required: true
+  github-token:
+    description: GitHub token for posting comments and opening PRs
+    required: true
+  mode:
+    description: "Operation mode: 'pr' to commit to the PR branch, 'open-pr' to open a new PR, 'audit' to diff full history and open a PR (run once on existing repos)"
+    required: true
+  diff-file:
+    description: Path to the file containing the git diff
+    required: false
+    default: diff.txt
+  readme-path:
+    description: Path to the README file to update
+    required: false
+    default: README.md
+  pr-number:
+    description: PR number (required in pr mode)
+    required: false
+    default: ''
+  base-branch:
+    description: Base branch to open PR against (required in open-pr mode)
+    required: false
+    default: main
+
+runs:
+  using: node20
+  main: dist/index.js

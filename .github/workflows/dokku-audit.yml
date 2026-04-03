@@ -1,0 +1,27 @@
+name: dokku-audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      base-branch:
+        description: Branch to open the README fix PR against
+        required: false
+        default: main
+
+jobs:
+  audit-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: run dokku audit
+        uses: your-org/dokku@v1
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          mode: audit
+          base-branch: ${{ inputs.base-branch }}
